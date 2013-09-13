@@ -1,0 +1,43 @@
+<html>
+<head>
+<title>TorMap - Jordan Wright (jmwright798 at gmail.com)</title>
+<script src="js/jquery.min.js"></script>
+
+<script src="js/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="js/jquery-jvectormap-world-mill-en.js"></script>
+<link rel="stylesheet" media="all" href="css/jquery-jvectormap-1.2.2.css"/>
+</head>
+<body>
+<div style="height:100%;width:100%" id="tor_map"></div>
+
+<script>
+$(function(){
+  $('#tor_map').vectorMap({
+    map: 'world_mill_en',
+    scaleColors: ['#C8EEFF', '#0071A4'],
+    normalizeFunction: 'polynomial',
+    hoverOpacity: 0.7,
+    hoverColor: false,
+    markerStyle: {
+      initial: {
+        fill: '#cc6600',
+        stroke: '#222222',
+        r: 2
+      }
+    },
+    backgroundColor: '#222222',
+    markers: [
+    ]
+  });
+  
+  map = $('#tor_map').vectorMap('get', 'mapObject');
+  $.getJSON('https://onionoo.torproject.org/details', function(data){
+		$.each(data.relays, function(idx, relay)
+		{
+			map.addMarker(relay.or_addresses[0], {'latLng' : [relay.latitude, relay.longitude], "name" : relay.or_addresses[0]});
+		});
+	});
+});
+</script>
+</body>
+</html>
